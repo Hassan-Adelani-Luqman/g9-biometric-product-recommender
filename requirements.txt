@@ -1,0 +1,25 @@
+# Python 3.10+ (developed on 3.12). Install with: pip install -r requirements.txt
+
+# Core data / ML
+numpy==2.5.4
+pandas==3.1.1
+matplotlib==3.11.2
+seaborn==0.13.2
+scikit-learn==1.9.1
+xgboost==3.4.1
+joblib==1.6.0
+
+# Image pipeline (Member B)
+opencv-python==5.0.0.93
+pillow==13.0.0
+scikit-image==0.26.0
+# Face-embedding backend: Member B decides in Phase 1D and pins it here,
+# e.g. facenet-pytorch / deepface, or torch + torchvision as the fallback.
+
+# Audio pipeline (Member C)
+librosa==1.0.0
+soundfile==0.14.0
+
+# Notebooks
+jupyter==1.1.1
+ipykernel==7.4.0
