@@ -181,14 +181,18 @@ g9-biometric-product-recommender/
    - Discuss in the notebook whether `customer_rating` counts as leakage (a rating given after purchase) and decide whether to keep it.
 8. Save to `data/processed/merged_customer_data.csv`. Also move the logic into `src/data_merge.py` so the pipeline can be rerun.
 
+> **1B status (8 Nov):** ✅ Done. `python src/data_merge.py` → 150 rows × 35 cols, 0 nulls, 7/7 validation checks pass. Notebook `01_data_merge_eda.ipynb` Part 1 documents every step. Decision: `customer_rating`, `purchase_amount` and `amount_bucket` are flagged as post-purchase (`dm.POST_PURCHASE_COLUMNS`), so the product model should use the `cust_prev_*` history features instead.
+
 #### 1C. EDA (Member A), at least 3 labelled plots, **each followed by 2–3 sentences of interpretation**
-- [ ] Summary stats table and a variable-type table (numeric, categorical, datetime, ID)
-- [ ] **Distribution:** histograms/KDE of `purchase_amount`, `engagement_score`, `purchase_interest_score`
-- [ ] **Outliers:** boxplots of `purchase_amount` by `product_category`
-- [ ] **Correlations:** heatmap of numeric features
-- [ ] **Target balance:** bar chart of `product_category` counts (this informs stratified splitting and class weights)
-- [ ] Bonus: platform vs. category countplot; sentiment vs. category
-- [ ] Save every figure to `reports/figures/eda_*.png`
+- [x] Summary stats table and a variable-type table (numeric, categorical, datetime, ID)
+- [x] **Distribution:** histograms/KDE of `purchase_amount`, `engagement_score`, `purchase_interest_score`
+- [x] **Outliers:** boxplots of `purchase_amount` by `product_category`
+- [x] **Correlations:** heatmap of numeric features
+- [x] **Target balance:** bar chart of `product_category` counts (this informs stratified splitting and class weights)
+- [x] Bonus: platform vs. category, month vs. category, previous category → next category
+- [x] Save every figure to `reports/figures/eda_*.png`
+
+> **1C status (8 Nov):** ✅ Done. 6 EDA figures with interpretation, plus a takeaways table for Phase 3A (§15 of notebook 01). Key findings: the target is near-balanced (baseline 23.3%); no numeric feature separates categories alone; `purchase_month` and `cust_prev_category` carry the most signal; drop redundant pairs (|r| ≥ 0.85) for Logistic Regression.
 
 #### 1D. Pipeline scaffolding (B, C, D in parallel)
 - B: `image_pipeline.py` with `load_image`, `augment`, `extract_features` function stubs, and a decision on which embedding library to use
