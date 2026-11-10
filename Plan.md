@@ -222,6 +222,14 @@ g9-biometric-product-recommender/
 6. Also extract features for `data/unauthorized/faces/` and label them `member = "unknown"`.
 7. Plot a **2-D PCA/t-SNE of the embeddings** coloured by member. This visual shows the classes are separable.
 
+> **2A status (9 Nov):** ✅ Done, except for unauthorized faces, which are waiting on D.
+> - **Pipeline and models:** `src/image_pipeline.py` uses OpenCV YuNet (detection) and SFace (128-d embeddings), with no torch needed.
+> - **Augmentation:** 8 augmentations per image.
+> - **Output:** `image_features.csv` has 108 rows × 194 columns (128 emb + 48 colour hist + 10 LBP), 0 nulls, faces detected in 108/108.
+> - **Notebook:** `02_image_processing.ipynb` has 8 figures with interpretation.
+> - **Separability:** same-person similarity is always above different-person similarity. Held-out-photo nearest-centroid accuracy is 100% for embeddings vs 71% for histograms, which are confounded by lighting and background.
+> - **To do:** rerun `python src/image_pipeline.py` once `data/unauthorized/faces/` is populated.
+
 #### 2B. Audio processing (Member C), notebook `03_audio_processing.ipynb`
 1. **Load** every clip with `librosa.load(sr=16000, mono=True)` and trim leading/trailing silence.
 2. **Visualise each member's clips:** waveform (`librosa.display.waveshow`) and **mel spectrogram in dB** (`specshow`), in a grid of member × phrase. Under the plots, write **interpretation**: where the speech energy sits, differences in pitch and formants between speakers, background noise level, and how the two phrases differ in duration and structure.
