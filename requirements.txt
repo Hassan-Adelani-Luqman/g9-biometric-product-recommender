@@ -20,6 +20,7 @@ scikit-image==0.26.0
 # Audio pipeline (Member C)
 librosa==1.0.0
 soundfile==0.14.0
+imageio-ffmpeg==0.8.1   # bundled ffmpeg: converts phone audio (m4a/aac/mp4) in src/ingest_biometrics.py
 
 # Notebooks
 jupyter==1.1.1
