@@ -1,0 +1,131 @@
+{
+  "model": "product_recommendation",
+  "owner": "Hassan Adelani Luqman",
+  "trained_at": "2026-11-10T21:20:48+00:00",
+  "algorithm": "Logistic Regression",
+  "feature_set": "previous category",
+  "params": {
+    "C": 0.3
+  },
+  "classes": [
+    "Books",
+    "Clothing",
+    "Electronics",
+    "Groceries",
+    "Sports"
+  ],
+  "numeric_features": [],
+  "categorical_features": [
+    "cust_prev_category"
+  ],
+  "input_columns": [
+    "purchase_month",
+    "purchase_dayofweek",
+    "is_weekend",
+    "cust_prev_txn_count",
+    "is_first_purchase",
+    "cust_prev_avg_amount",
+    "cust_prev_avg_rating",
+    "days_since_prev_txn",
+    "has_social_profile",
+    "n_social_profiles",
+    "avg_engagement",
+    "avg_purchase_interest",
+    "sentiment_score",
+    "pct_neutral",
+    "pct_negative",
+    "plat_Facebook",
+    "plat_Instagram",
+    "plat_LinkedIn",
+    "plat_TikTok",
+    "plat_Twitter",
+    "cust_prev_category",
+    "dominant_platform"
+  ],
+  "excluded_features": {
+    "post_purchase": [
+      "purchase_amount",
+      "amount_bucket",
+      "customer_rating",
+      "rating_was_missing",
+      "amount_is_outlier"
+    ],
+    "redundant": [
+      "n_platforms",
+      "max_engagement",
+      "max_purchase_interest",
+      "pct_positive"
+    ],
+    "identifiers": [
+      "transaction_id",
+      "customer_id",
+      "purchase_date"
+    ]
+  },
+  "training_rows": 150,
+  "data_as_of": "2024-05-29",
+  "selection": "algorithm x feature set with the lowest mean log loss in repeated stratified 5-fold CV (5 x 10) on the 120-row training split",
+  "metrics": {
+    "cv_5x10_train_split": {
+      "accuracy": 0.2817,
+      "f1_macro": 0.2414,
+      "log_loss": 1.5753,
+      "top3_accuracy": 0.7067
+    },
+    "held_out_test": {
+      "rows": 30,
+      "accuracy": 0.2667,
+      "f1_macro": 0.2251,
+      "log_loss": 1.6549,
+      "top3_accuracy": 0.5667
+    },
+    "customer_grouped_cv": {
+      "accuracy": 0.2937,
+      "f1_macro": 0.2672,
+      "log_loss": 1.5951,
+      "top3_accuracy": 0.6401
+    },
+    "baseline_class_prior": {
+      "cv_accuracy": 0.2083,
+      "cv_log_loss": 1.6037,
+      "test_accuracy": 0.2333
+    }
+  },
+  "test_confusion_matrix": [
+    [
+      0,
+      0,
+      2,
+      1,
+      2
+    ],
+    [
+      1,
+      1,
+      2,
+      0,
+      2
+    ],
+    [
+      1,
+      0,
+      5,
+      0,
+      1
+    ],
+    [
+      1,
+      0,
+      3,
+      1,
+      0
+    ],
+    [
+      0,
+      0,
+      6,
+      0,
+      1
+    ]
+  ]
+}
