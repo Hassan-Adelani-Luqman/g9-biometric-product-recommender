@@ -270,6 +270,14 @@ g9-biometric-product-recommender/
 - **Be honest:** with 5 classes and about 150 rows, accuracy may be modest. Say so in the report, and frame it against the baseline (1/5 = 20% random).
 - Provide `predict_for_customer(customer_id) -> (category, probabilities)`, which builds the feature row from that customer's latest data.
 
+> **3A status (10 Nov):** ✅ Done.
+> - **Script:** `python src/train_product_model.py` runs in about 1.5 min and saves `models/product_model.joblib` + `product_model_meta.json`.
+> - **Selection:** 3 algorithms × 3 feature sets, chosen by repeated-CV log loss on the training split. The winner is **Logistic Regression on `cust_prev_category`** (C = 0.3).
+> - **Results:** accuracy is 28.2% in CV, 26.7% on the held-out test and 29.4% on unseen customers. The baselines are 20.8%, 23.3% and 22.7%.
+> - **Feature sets:** the all-features models overfit and fall below the baseline on unseen customers, so the social-profile features are not used.
+> - **Notebook:** `04_model_training_evaluation.ipynb` Part A has 6 figures (`product_*.png`). The 3D summary table auto-fills from `models/{face,voice}_model_meta.json` once B and C save them.
+> - **For D (CLI app):** `from src.train_product_model import predict_for_customer`; `predict_for_customer(187)` returns `("Groceries", {...})`. The four members get four different predictions.
+
 #### 3B. Facial Recognition Model (Member B), `train_face_model.py`
 - Input: `image_features.csv`. Classes: the 4 members (+ `unknown` if enough unauthorised samples exist).
 - Candidates: Logistic Regression and an SVM/RF on standardised embeddings (+ histograms).
