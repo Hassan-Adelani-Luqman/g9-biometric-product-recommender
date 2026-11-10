@@ -12,10 +12,10 @@ Fill in names on day one. Each person **owns** one area. Everyone still **contri
 
 | Member | Name | Primary ownership | Secondary / review duty |
 |---|---|---|---|
-| **A** | _TBD_ | Tabular data: merge, cleaning, EDA, **Product Recommendation Model** | Reviews D's CLI integration |
-| **B** | _TBD_ | Image pipeline: collection standards, augmentation, `image_features.csv`, **Facial Recognition Model** | Reviews C's audio pipeline |
-| **C** | _TBD_ | Audio pipeline: collection standards, visualisation, augmentation, `audio_features.csv`, **Voiceprint Verification Model** | Reviews B's image pipeline |
-| **D** | _TBD_ | System integration: repo, shared utils, **CLI app**, unauthorised-attempt simulation, final notebook, report and video | Reviews A's merge/model |
+| **A** | Hassan Adelani Luqman (`hassan`) | Tabular data: merge, cleaning, EDA, **Product Recommendation Model** | Reviews D's CLI integration |
+| **B** | Emma Tiffany Umwari (`emma`) | Image pipeline: collection standards, augmentation, `image_features.csv`, **Facial Recognition Model** | Reviews C's audio pipeline |
+| **C** | Parfait Shema Semana (`parfait`) | Audio pipeline: collection standards, visualisation, augmentation, `audio_features.csv`, **Voiceprint Verification Model** | Reviews B's image pipeline |
+| **D** | Peter Michael Angelo Rucakibungo (`peter`) | System integration: repo, shared utils, **CLI app**, unauthorised-attempt simulation, final notebook, report and video | Reviews A's merge/model |
 
 **Shared by everyone:**
 - Each member records **3+ facial images** (neutral, smiling, surprised) and **2+ audio clips** ("Yes, approve", "Confirm transaction"). Section 2.3 has the conventions.
@@ -103,9 +103,10 @@ g9-biometric-product-recommender/
 ### 2.3 Biometric data collection standards (everyone)
 | Item | Standard |
 |---|---|
-| Member IDs | `member_a`, `member_b`, `member_c`, `member_d` (or lowercase first names, decided once and never changed) |
-| Images | **3 expressions × 2–3 takes** each (`neutral`, `smiling`, `surprised`), `.jpg`, front-facing, face fills about 50% of the frame, even lighting, plain background. Example: `member_a_smiling_01.jpg` |
-| Audio | **2 phrases × 2–3 takes** each (`yes_approve`, `confirm_transaction`), `.wav`, **16 kHz mono**, 2–4 s long, quiet room, ~20 cm from the mic, about 0.5 s of silence before speaking. Example: `member_a_confirm_transaction_02.wav` |
+| Member IDs | **Decided (9 Nov): lowercase first names:** `hassan`, `emma`, `parfait`, `peter` (full names in `config.MEMBER_NAMES`) |
+| Images | **3 expressions × 2–3 takes** each (`neutral`, `smiling`, `surprised`), `.jpg`, front-facing, face fills about 50% of the frame, even lighting, plain background. Example: `hassan_smiling_01.jpg` |
+| Audio | **2 phrases × 2–3 takes** each (`yes_approve`, `confirm_transaction`), `.wav`, **16 kHz mono**, 2–4 s long, quiet room, ~20 cm from the mic, about 0.5 s of silence before speaking. Example: `emma_confirm_transaction_02.wav` |
+| Ingest | Raw phone files are normalised with `python src/ingest_biometrics.py <folder>` (renames, converts audio to wav, strips image metadata) |
 | Unauthorised samples | At least **2 faces** and **2 voices** from non-members: consenting friends, public-domain images (e.g. a few LFW faces), or TTS voices. Record where each came from in the README. |
 | Consent | Members agree to their face and voice being committed to the repo. If the repo is public, note this in the README. |
 
@@ -139,9 +140,9 @@ g9-biometric-product-recommender/
 ### Phase 1: Data collection & tabular merge · **Sun 8 – Mon 9 Nov**
 
 #### 1A. Biometric data collection (all members, finish by Sunday night)
-- [ ] Each member uploads 3 expressions × 2–3 takes to `data/images/<member>/`
-- [ ] Each member uploads 2 phrases × 2–3 takes to `data/audio/<member>/`
-- [ ] B checks image naming, format and quality; C checks audio sample rate, channels, clipping and silence
+- [x] Each member uploads 3 expressions to `data/images/<member>/` (**1 take each so far**; 2–3 recommended)
+- [x] Each member uploads 2 phrases to `data/audio/<member>/` (**1 take each so far**)
+- [x] Naming, format and quality checks: all 12 images are upright with metadata/GPS stripped; all 8 clips are 16 kHz mono, 2.4–4.2 s, no clipping (Emma's and Parfait's clips are quiet, peak 0.09–0.17, so normalise loudness in Phase 2)
 - [ ] D collects unauthorised face and voice samples into `data/unauthorized/`
 
 #### 1B. Data merge & cleaning (Member A)
@@ -206,7 +207,7 @@ g9-biometric-product-recommender/
 ### Phase 2: Image & audio processing · **Mon 9 – Tue 10 Nov**
 
 #### 2A. Image processing (Member B), notebook `02_image_processing.ipynb`
-1. **Load and display** a grid of **every member × 3 expressions** with titles (`member_a – smiling`).
+1. **Load and display** a grid of **every member × 3 expressions** with titles (`hassan – smiling`).
 2. **Preprocess:** detect and crop the face (OpenCV Haar cascade or MTCNN), resize to 160×160 (or 224×224), and normalise.
 3. **Augment each image with ≥2 transforms; aim for 4–6:**
    - Rotation (±15°), horizontal flip, grayscale (converted back to 3 channels), brightness/contrast jitter, Gaussian blur or noise
@@ -323,14 +324,14 @@ START
 - **Cross-modal consistency check:** the voice must belong to *the same person* the face identified. This is the core of the "multimodal logic" criterion, so explain it in the report.
 
 #### 4.2 Member → customer mapping
-The team members are not in the transaction data. Map each member to a real `customer_id` from the merged dataset in `config.py`, and document this as a simulation assumption. **Set in Phase 0:** `member_a → 187` (Sports-leaning), `member_b → 101` (Books), `member_c → 114` (Clothing), `member_d → 120` (Groceries). All four have both transactions and social profiles.
+The team members are not in the transaction data. Map each member to a real `customer_id` from the merged dataset in `config.py`, and document this as a simulation assumption. **Set in Phase 0:** `hassan → 187` (Sports-leaning), `emma → 101` (Books), `parfait → 114` (Clothing), `peter → 120` (Groceries). All four have both transactions and social profiles.
 
 #### 4.3 CLI app (`src/app.py`)
 - Non-interactive mode:
-  `python src/app.py --face data/images/member_a/member_a_neutral_01.jpg --voice data/audio/member_a/member_a_yes_approve_01.wav`
+  `python src/app.py --face data/images/hassan/hassan_neutral_01.jpg --voice data/audio/hassan/hassan_yes_approve_01.wav`
 - Interactive mode: `python src/app.py` prompts for the face path, then the voice path, step by step.
 - Demo mode: `python src/app.py --demo` runs every scenario below in sequence (useful for the video).
-- Clear stage-by-stage output (`[1/3] Facial recognition… ✅ member_a (0.94)`), timing per step, and graceful handling of missing or invalid files.
+- Clear stage-by-stage output (`[1/3] Facial recognition… ✅ hassan (0.94)`), timing per step, and graceful handling of missing or invalid files.
 
 #### 4.4 Required test scenarios (all must run without errors)
 | # | Face input | Voice input | Expected result |
