@@ -61,6 +61,12 @@ def main():
             print(f"{member_dir.name}/{src.name:28s} -> {dst.relative_to(ROOT)}")
     print(f"\nConverted {sum(takes.values())} recordings for {len({m for m, _ in takes})} members.")
 
+    UNAUTH_DIR.mkdir(parents=True, exist_ok=True)
+    for src in sorted(p for p in UNAUTH_DIR.iterdir() if p.suffix.lower() in MEDIA_EXTS - {".wav"}):
+        dst = src.with_suffix(".wav")
+        to_wav(src, dst)
+        print(f"unauthorized/{src.name} -> {dst.relative_to(ROOT)}")
+
 
 if __name__ == "__main__":
     main()

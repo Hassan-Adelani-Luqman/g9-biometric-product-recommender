@@ -15,5 +15,7 @@
   "best_model": "logistic_regression",
   "prob_threshold": 0.404,
   "dist_threshold": 2.444,
-  "genuine_accept_rate_cv": 0.3542
+  "genuine_accept_rate_cv": 0.3542,
+  "unauthorized_reject_rate": 0.5,
+  "unauthorized_clips": 2
 }
