@@ -41,10 +41,17 @@ PRODUCT_META_PATH = MODELS_DIR / "product_model_meta.json"
 
 # --------------------------------------------------------------------------
 # Team members & data-collection conventions
-# File names: <member>_<expression>_<take>.jpg  e.g. member_a_smiling_01.jpg
-#             <member>_<phrase>_<take>.wav      e.g. member_a_yes_approve_02.wav
+# File names: <member>_<expression>_<take>.jpg  e.g. hassan_smiling_01.jpg
+#             <member>_<phrase>_<take>.wav      e.g. emma_yes_approve_02.wav
+# Member IDs are lowercase first names (fixed; used as class labels).
 # --------------------------------------------------------------------------
-MEMBERS = ["member_a", "member_b", "member_c", "member_d"]
+MEMBER_NAMES = {
+    "hassan": "Hassan Adelani Luqman",
+    "emma": "Emma Tiffany Umwari",
+    "parfait": "Parfait Shema Semana",
+    "peter": "Peter Michael Angelo Rucakibungo",
+}
+MEMBERS = list(MEMBER_NAMES)
 UNKNOWN_LABEL = "unknown"
 
 EXPRESSIONS = ["neutral", "smiling", "surprised"]
@@ -58,10 +65,10 @@ AUDIO_EXT = ".wav"
 # social profile. The customers were chosen to lean toward different
 # categories so the demo shows varied predictions.
 MEMBER_TO_CUSTOMER = {
-    "member_a": 187,  # 5 transactions, mostly Sports
-    "member_b": 101,  # 4 transactions, mostly Books
-    "member_c": 114,  # 4 transactions, mostly Clothing
-    "member_d": 120,  # 3 transactions, mostly Groceries
+    "hassan": 187,   # 5 transactions, mostly Sports
+    "emma": 101,     # 4 transactions, mostly Books
+    "parfait": 114,  # 4 transactions, mostly Clothing
+    "peter": 120,    # 3 transactions, mostly Groceries
 }
 
 # --------------------------------------------------------------------------

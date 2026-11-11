@@ -14,6 +14,9 @@ data/audio/augmented/*
 !data/images/augmented/.gitkeep
 !data/audio/augmented/.gitkeep
 
+# Pretrained face models (auto-downloaded and checksum-verified by src/image_pipeline.py)
+models/pretrained/
+
 # OS / editor
 .DS_Store
 .vscode/

@@ -21,10 +21,10 @@ Start → Facial Recognition ──fail──▶ Access Denied
 
 | Member | Name | Ownership |
 |---|---|---|
-| A | _TBD_ | Data merge, EDA, product recommendation model |
-| B | _TBD_ | Image pipeline, `image_features.csv`, facial recognition model |
-| C | _TBD_ | Audio pipeline, `audio_features.csv`, voiceprint verification model |
-| D | _TBD_ | Integration, CLI app, unauthorised-attempt demo, report and video |
+| A | Hassan Adelani Luqman | Data merge, EDA, product recommendation model |
+| B | Emma Tiffany Umwari | Image pipeline, `image_features.csv`, facial recognition model |
+| C | Parfait Shema Semana | Audio pipeline, `audio_features.csv`, voiceprint verification model |
+| D | Peter Michael Angelo Rucakibungo | Integration, CLI app, unauthorised-attempt demo, report and video |
 
 ## Setup
 
@@ -42,8 +42,8 @@ pip install -r requirements.txt
 |---|---|
 | `data/raw/` | Original `customer_social_profiles.csv` and `customer_transactions.csv` |
 | `data/processed/` | `merged_customer_data.csv` (merged and feature-engineered) |
-| `data/images/<member>/` | Facial images, e.g. `member_a_smiling_01.jpg` |
-| `data/audio/<member>/` | Voice clips, e.g. `member_a_yes_approve_01.wav` (16 kHz mono) |
+| `data/images/<member>/` | Facial images, e.g. `hassan_smiling_01.jpg` |
+| `data/audio/<member>/` | Voice clips, e.g. `emma_yes_approve_01.wav` (16 kHz mono) |
 | `data/unauthorized/` | Non-member faces and voices for the access-denied demo |
 | `features/` | `image_features.csv`, `audio_features.csv` |
 | `models/` | Trained models (`*.joblib`) plus metadata (`*_meta.json`) |
@@ -57,8 +57,23 @@ Shared paths, member IDs, the member → customer mapping and thresholds are in 
 
 - **Images:** 3 expressions (`neutral`, `smiling`, `surprised`) × 2–3 takes, `.jpg`, front-facing, even lighting.
 - **Audio:** 2 phrases (`yes_approve`, `confirm_transaction`) × 2–3 takes, `.wav`, 16 kHz mono, 2–4 s, quiet room.
-- **Naming:** `<member>_<expression|phrase>_<take>.<ext>`, using member IDs `member_a` … `member_d`.
+- **Naming:** `<member>_<expression|phrase>_<take>.<ext>`, using member IDs `hassan`, `emma`, `parfait`, `peter`.
 - **Consent:** all members agree to their face and voice samples being stored in this repository.
+
+### Adding recordings
+
+Put new recordings in a folder laid out as `Image_features/<Full Name>/<expression>.jpg` and `Audio_features/<Full Name>/<phrase>.m4a` (any common phone format), then run:
+
+```bash
+python src/ingest_biometrics.py <folder> --dry-run   # preview the mapping
+python src/ingest_biometrics.py <folder>             # copy into data/
+```
+
+The script:
+- renames files to the convention above, fixing typos such as "suprised";
+- converts audio to 16 kHz mono `.wav`;
+- applies photo rotation and **strips all image metadata**, including the GPS location phones embed;
+- never overwrites existing files. A second recording of the same expression or phrase becomes take `_02`, `_03`, and so on.
 
 ## How to run
 

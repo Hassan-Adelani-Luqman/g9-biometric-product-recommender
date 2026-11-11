@@ -13,12 +13,14 @@ joblib==1.6.0
 opencv-python==5.0.0.93
 pillow==13.0.0
 scikit-image==0.26.0
-# Face-embedding backend: Member B decides in Phase 1D and pins it here,
-# e.g. facenet-pytorch / deepface, or torch + torchvision as the fallback.
+# Face detection + embeddings: OpenCV Zoo YuNet + SFace (ONNX), run by
+# opencv-python above, so no torch/tensorflow is needed. The model files are
+# downloaded and checksum-verified on first use by src/image_pipeline.py.
 
 # Audio pipeline (Member C)
 librosa==1.0.0
 soundfile==0.14.0
+imageio-ffmpeg==0.8.1   # bundled ffmpeg: converts phone audio (m4a/aac/mp4) in src/ingest_biometrics.py
 
 # Notebooks
 jupyter==1.1.1
