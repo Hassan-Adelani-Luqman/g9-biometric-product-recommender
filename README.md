@@ -60,6 +60,14 @@ Shared paths, member IDs, the member → customer mapping and thresholds are in 
 - **Naming:** `<member>_<expression|phrase>_<take>.<ext>`, using member IDs `hassan`, `emma`, `parfait`, `peter`.
 - **Consent:** all members agree to their face and voice samples being stored in this repository.
 
+### Unauthorized (non-member) samples
+
+These are used only to test that strangers are denied, never to train a model.
+
+| File(s) | Who | Source |
+|---|---|---|
+| `data/unauthorized/faces/{neutral,smiling,surprised}.png` | one non-member, 3 expressions | _to confirm (e.g. stock-photo site and licence)_ |
+
 ### Adding recordings
 
 Put new recordings in a folder laid out as `Image_features/<Full Name>/<expression>.jpg` and `Audio_features/<Full Name>/<phrase>.m4a` (any common phone format), then run:
@@ -77,7 +85,23 @@ The script:
 
 ## How to run
 
-_To be completed in Phase 4. Planned usage:_
+Rebuild the data, features and models (each step reads the previous step's output):
+
+```bash
+python src/data_merge.py                       # -> data/processed/merged_customer_data.csv
+python src/image_pipeline.py                   # -> features/image_features.csv
+python src/train_product_model.py              # -> models/product_model.joblib + meta
+python src/train_face_model.py                 # -> models/face_model.joblib + meta
+```
+
+Check single inputs:
+
+```bash
+python src/train_face_model.py identify data/images/peter/peter_smiling_01.jpg
+python src/train_product_model.py predict 187
+```
+
+The CLI app is still to be completed in Phase 4. Planned usage:
 
 ```bash
 python src/app.py --face <image.jpg> --voice <clip.wav>   # single transaction

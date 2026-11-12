@@ -284,6 +284,14 @@ g9-biometric-product-recommender/
 - **Rejecting unknown faces:** set a confidence threshold on `max(predict_proba)`. Optionally add a cosine-distance check against each member's mean embedding. Tune the threshold on validation data so that unauthorised faces are rejected and members are accepted. Save it in `face_model_meta.json`.
 - Report accuracy, F1 and log-loss, and the rejection rate on unauthorised faces.
 
+> **3B status (12 Nov):** ✅ Done. Real non-member test: **27/27 rows of 3 non-member photos rejected**. The highest similarity was 0.25, against a threshold of 0.509.
+> - **Script:** `python src/train_face_model.py` runs in about 20 s and saves `models/face_model.joblib` + `face_model_meta.json`.
+> - **Selection:** leave-one-source-photo-out CV (12 folds, augmented copies held out with their photo), 3 algorithms × 2 feature sets, chosen by log loss. The winner is **Logistic Regression on the 128-d SFace embedding**.
+> - **Results:** 100% accuracy and macro F1, log loss 0.007. Every augmentation is recognised.
+> - **Rejecting strangers:** classifier confidence cannot do it, because simulated strangers reach 0.89. Instead, **cosine similarity to the member's mean embedding** must be ≥ **0.509**. Genuine scores are ≥ 0.61 and leave-one-member-out strangers ≤ 0.41, so 100% / 100% on simulated data.
+> - **For D:** `from src.train_face_model import identify_face`. `identify_face(path)` returns `{"accepted", "member", "similarity", "reason", ...}`.
+> - **Non-member photos:** `image_features.csv` now has 135 rows, including 27 labelled `unknown`. They are used for testing only, never for training. Notebook 02, Section 8 shows them.
+
 #### 3C. Voiceprint Verification Model (Member C), `train_voice_model.py`
 - Input: `audio_features.csv`. Classes: the 4 members (+ `unknown`).
 - Candidates: Logistic Regression, Random Forest, XGBoost on standardised features.
