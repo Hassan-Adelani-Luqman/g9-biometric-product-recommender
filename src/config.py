@@ -29,7 +29,9 @@ SOCIAL_PROFILES_CSV = RAW_DIR / "customer_social_profiles.csv"
 TRANSACTIONS_CSV = RAW_DIR / "customer_transactions.csv"
 MERGED_CSV = PROCESSED_DIR / "merged_customer_data.csv"
 IMAGE_FEATURES_CSV = FEATURES_DIR / "image_features.csv"
-AUDIO_FEATURES_CSV = FEATURES_DIR / "audio_features.csv"
+# Member C keeps the audio pipeline, recordings and features in Audio_features/.
+AUDIO_PIPELINE_DIR = ROOT / "Audio_features"
+AUDIO_FEATURES_CSV = AUDIO_PIPELINE_DIR / "data" / "audio_features.csv"
 MULTIMODAL_FEATURES_CSV = FEATURES_DIR / "multimodal_features.csv"
 
 FACE_MODEL_PATH = MODELS_DIR / "face_model.joblib"
