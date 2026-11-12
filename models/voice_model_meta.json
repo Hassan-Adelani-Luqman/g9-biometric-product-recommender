@@ -1,0 +1,212 @@
+{
+  "model": "voice_verification",
+  "owner": "Parfait Shema Semana",
+  "trained_at": "2026-11-11T23:48:18+00:00",
+  "algorithm": "XGBoost",
+  "feature_columns": [
+    "mfcc_1_mean",
+    "mfcc_1_std",
+    "mfcc_2_mean",
+    "mfcc_2_std",
+    "mfcc_3_mean",
+    "mfcc_3_std",
+    "mfcc_4_mean",
+    "mfcc_4_std",
+    "mfcc_5_mean",
+    "mfcc_5_std",
+    "mfcc_6_mean",
+    "mfcc_6_std",
+    "mfcc_7_mean",
+    "mfcc_7_std",
+    "mfcc_8_mean",
+    "mfcc_8_std",
+    "mfcc_9_mean",
+    "mfcc_9_std",
+    "mfcc_10_mean",
+    "mfcc_10_std",
+    "mfcc_11_mean",
+    "mfcc_11_std",
+    "mfcc_12_mean",
+    "mfcc_12_std",
+    "mfcc_13_mean",
+    "mfcc_13_std",
+    "mfcc_delta_1_mean",
+    "mfcc_delta_1_std",
+    "mfcc_delta_2_mean",
+    "mfcc_delta_2_std",
+    "mfcc_delta_3_mean",
+    "mfcc_delta_3_std",
+    "mfcc_delta_4_mean",
+    "mfcc_delta_4_std",
+    "mfcc_delta_5_mean",
+    "mfcc_delta_5_std",
+    "mfcc_delta_6_mean",
+    "mfcc_delta_6_std",
+    "mfcc_delta_7_mean",
+    "mfcc_delta_7_std",
+    "mfcc_delta_8_mean",
+    "mfcc_delta_8_std",
+    "mfcc_delta_9_mean",
+    "mfcc_delta_9_std",
+    "mfcc_delta_10_mean",
+    "mfcc_delta_10_std",
+    "mfcc_delta_11_mean",
+    "mfcc_delta_11_std",
+    "mfcc_delta_12_mean",
+    "mfcc_delta_12_std",
+    "mfcc_delta_13_mean",
+    "mfcc_delta_13_std",
+    "rolloff_mean",
+    "rolloff_std",
+    "centroid_mean",
+    "centroid_std",
+    "bandwidth_mean",
+    "bandwidth_std",
+    "zcr_mean",
+    "zcr_std",
+    "rms_energy_mean",
+    "rms_energy_std",
+    "pitch_f0_mean",
+    "pitch_f0_std"
+  ],
+  "classes": [
+    "emma",
+    "hassan",
+    "parfait",
+    "peter"
+  ],
+  "threshold": 0.533,
+  "threshold_metric": "P(claimed member | clip); accept only if the top prediction is the claimed member and its probability >= threshold",
+  "threshold_selection": "minimises false-reject rate + 2 x false-accept rate on held-out verification attempts",
+  "training_rows": 48,
+  "recordings": 8,
+  "selection": "algorithm with the lowest log loss on leave-one-recording-out predictions",
+  "metrics": {
+    "held_out_test": {
+      "evaluation": "leave-one-recording-out: each recording and its augmented copies predicted by a model that never saw them (trained on the speaker's other phrase only)",
+      "rows": 48,
+      "accuracy": 0.6458,
+      "f1_macro": 0.6408,
+      "log_loss": 0.946
+    },
+    "candidates": {
+      "XGBoost": {
+        "accuracy": 0.6458,
+        "f1_macro": 0.6408,
+        "log_loss": 0.946
+      },
+      "Logistic Regression": {
+        "accuracy": 0.4167,
+        "f1_macro": 0.4152,
+        "log_loss": 1.1355
+      },
+      "Random Forest": {
+        "accuracy": 0.375,
+        "f1_macro": 0.3642,
+        "log_loss": 1.3047
+      }
+    },
+    "per_augmentation": {
+      "original": {
+        "accuracy": 0.75,
+        "accept_rate": 0.5
+      },
+      "pitch_up": {
+        "accuracy": 0.625,
+        "accept_rate": 0.375
+      },
+      "pitch_down": {
+        "accuracy": 0.625,
+        "accept_rate": 0.25
+      },
+      "stretch_fast": {
+        "accuracy": 0.5,
+        "accept_rate": 0.5
+      },
+      "stretch_slow": {
+        "accuracy": 0.75,
+        "accept_rate": 0.375
+      },
+      "noise_gain_shift": {
+        "accuracy": 0.625,
+        "accept_rate": 0.625
+      }
+    },
+    "per_member": {
+      "emma": {
+        "accuracy": 0.75,
+        "accept_rate": 0.3333
+      },
+      "hassan": {
+        "accuracy": 0.4167,
+        "accept_rate": 0.0
+      },
+      "parfait": {
+        "accuracy": 0.9167,
+        "accept_rate": 0.9167
+      },
+      "peter": {
+        "accuracy": 0.5,
+        "accept_rate": 0.5
+      }
+    },
+    "rejection": {
+      "genuine_accept_rate": 0.4375,
+      "member_impostor_reject_rate": 0.9653,
+      "simulated_stranger_reject_rate": 0.9028,
+      "simulated_stranger_method": "leave-one-member-out: each member removed from training; their clips claim each other member",
+      "unauthorized_voices": {
+        "clips": 4,
+        "reject_rate": 0.0,
+        "per_clip": {
+          "data/unauthorized/voices/approve.wav": {
+            "closest_member": "hassan",
+            "confidence": 0.853,
+            "rejected": false
+          },
+          "data/unauthorized/voices/confirm.wav": {
+            "closest_member": "hassan",
+            "confidence": 0.584,
+            "rejected": false
+          },
+          "Audio_features/data/audio/unauthorized/Ketia_approve.wav": {
+            "closest_member": "parfait",
+            "confidence": 0.856,
+            "rejected": false
+          },
+          "Audio_features/data/audio/unauthorized/Ketia_comfirm.wav": {
+            "closest_member": "parfait",
+            "confidence": 0.934,
+            "rejected": false
+          }
+        }
+      }
+    }
+  },
+  "confusion_matrix": [
+    [
+      9,
+      1,
+      0,
+      2
+    ],
+    [
+      6,
+      5,
+      1,
+      0
+    ],
+    [
+      0,
+      0,
+      11,
+      1
+    ],
+    [
+      2,
+      4,
+      0,
+      6
+    ]
+  ]
+}
