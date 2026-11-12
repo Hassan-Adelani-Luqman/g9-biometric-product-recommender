@@ -143,7 +143,7 @@ g9-biometric-product-recommender/
 - [x] Each member uploads 3 expressions to `data/images/<member>/` (**1 take each so far**; 2–3 recommended)
 - [x] Each member uploads 2 phrases to `data/audio/<member>/` (**1 take each so far**)
 - [x] Naming, format and quality checks: all 12 images are upright with metadata/GPS stripped; all 8 clips are 16 kHz mono, 2.4–4.2 s, no clipping (Emma's and Parfait's clips are quiet, peak 0.09–0.17, so normalise loudness in Phase 2)
-- [ ] D collects unauthorised face and voice samples into `data/unauthorized/`
+- [x] D collects unauthorised face and voice samples into `data/unauthorized/` (3 faces, 2 voices; plus Ketia's 2 clips in `Audio_features/data/audio/unauthorized/`)
 
 #### 1B. Data merge & cleaning (Member A)
 **What the data looks like (from inspecting the raw files):**
@@ -353,7 +353,7 @@ The team members are not in the transaction data. Map each member to a real `cus
 
 #### 4.3 CLI app (`src/app.py`)
 - Non-interactive mode:
-  `python src/app.py --face data/images/hassan/hassan_neutral_01.jpg --voice data/audio/hassan/hassan_yes_approve_01.wav`
+  `python src/app.py --face data/images/hassan/hassan_neutral_01.jpg --voice Audio_features/data/audio/raw/hassan_yes_approve_1.wav`
 - Interactive mode: `python src/app.py` prompts for the face path, then the voice path, step by step.
 - Demo mode: `python src/app.py --demo` runs every scenario below in sequence (useful for the video).
 - Clear stage-by-stage output (`[1/3] Facial recognition… ✅ hassan (0.94)`), timing per step, and graceful handling of missing or invalid files.
@@ -368,8 +368,21 @@ The team members are not in the transaction data. Map each member to a real `cus
 | 5 | Member C | Member D's voice | ❌ Denied: identity mismatch |
 | 6 | Augmented image (e.g. rotated) of Member D | Augmented (noisy) voice of Member D | ✅ Robustness demo |
 
-- [ ] D runs every scenario. A, B and C fix their components if a threshold or model misbehaves.
-- [ ] Capture the demo run inside `05_system_demo.ipynb` (`!python src/app.py --demo`) so it is visible in the notebook too.
+- [x] D runs every scenario. A, B and C fix their components if a threshold or model misbehaves.
+- [x] Capture the demo run inside `05_system_demo.ipynb` (`!python src/app.py --demo`) so it is visible in the notebook too.
+
+> **Phase 4 status (12 Nov):** ✅ Done. `python src/app.py --demo` passes **6/6 scenarios**, also from a fresh clone that follows the README.
+> - **App:** `src/app.py` has 3 modes: `--face … --voice …`, interactive (asks for the voice only after the face is accepted), and `--demo`.
+>   - Each step is printed with its result, threshold and timing. The product is computed after the face step but only shown after the voice step passes.
+>   - Missing, wrong-type or corrupt files and photos without a face give a clear message, not a traceback.
+>   - Exit codes: 0 granted, 1 denied, 2 bad input.
+> - **Scenario 4** uses `data/unauthorized/voices/approve.wav`, which is denied at the voice step as an identity mismatch, because the model hears Hassan. **Scenario 6** generates its inputs on the fly: Peter's photo rotated −15°, and Peter's clip with new 20 dB background noise.
+> - **Notebook:** `05_system_demo.ipynb` covers:
+>   - the demo run and a decision chart (`reports/figures/system_demo_decisions.png`);
+>   - single and interactive use, and error handling;
+>   - a robustness sweep: 108/108 augmented faces accepted, all voices accepted down to 15 dB SNR, some rejected at 10 dB;
+>   - the known limitation: Ketia's voice with Parfait's face is **wrongly approved**, as found in 3C. The report and the video must state this.
+> - **Speed:** about 4 s to load the models once, then 0.2–0.6 s per transaction.
 
 **Done when:** all 6 scenarios behave as expected from a **fresh clone** following the README.
 
