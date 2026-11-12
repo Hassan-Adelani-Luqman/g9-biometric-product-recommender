@@ -45,7 +45,8 @@ pip install -r requirements.txt
 | `data/images/<member>/` | Facial images, e.g. `hassan_smiling_01.jpg` |
 | `data/audio/<member>/` | Voice clips, e.g. `emma_yes_approve_01.wav` (16 kHz mono) |
 | `data/unauthorized/` | Non-member faces and voices for the access-denied demo |
-| `features/` | `image_features.csv`, `audio_features.csv` |
+| `features/` | `image_features.csv` |
+| `Audio_features/` | Member C's audio pipeline: recordings, `data/audio_features.csv`, `audio_pipeline.py`, notebook and figures |
 | `models/` | Trained models (`*.joblib`) plus metadata (`*_meta.json`) |
 | `notebooks/` | `01`–`05`, one per pipeline stage |
 | `src/` | Pipeline scripts and the CLI app (`app.py`) |
@@ -67,6 +68,8 @@ These are used only to test that strangers are denied, never to train a model.
 | File(s) | Who | Source |
 |---|---|---|
 | `data/unauthorized/faces/{neutral,smiling,surprised}.png` | one non-member, 3 expressions | _to confirm (e.g. stock-photo site and licence)_ |
+| `data/unauthorized/voices/{approve,confirm}.wav` | one non-member | _to confirm_ |
+| `Audio_features/data/audio/unauthorized/Ketia_{approve,comfirm}.{m4a,wav}` | Ketia, a consenting non-member | recorded for the project (Member C) |
 
 ### Adding recordings
 
@@ -90,14 +93,17 @@ Rebuild the data, features and models (each step reads the previous step's outpu
 ```bash
 python src/data_merge.py                       # -> data/processed/merged_customer_data.csv
 python src/image_pipeline.py                   # -> features/image_features.csv
+python Audio_features/audio_pipeline.py        # -> Audio_features/data/audio_features.csv
 python src/train_product_model.py              # -> models/product_model.joblib + meta
 python src/train_face_model.py                 # -> models/face_model.joblib + meta
+python src/train_voice_model.py                # -> models/voice_model.joblib + meta
 ```
 
 Check single inputs:
 
 ```bash
 python src/train_face_model.py identify data/images/peter/peter_smiling_01.jpg
+python src/train_voice_model.py verify Audio_features/data/audio/raw/emma_yes_approve_1.wav emma
 python src/train_product_model.py predict 187
 ```
 

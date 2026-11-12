@@ -299,6 +299,15 @@ g9-biometric-product-recommender/
 - Optional: phrase check (was the phrase "Yes, approve" or "Confirm transaction"?) as a secondary classifier. This is not required.
 - Report accuracy, F1 and log-loss, and the rejection rate on unauthorised voices.
 
+> **3C status (11 Nov):** ⚠️ Model saved, but weak. It needs more recordings.
+> - **Script:** `python src/train_voice_model.py` runs in about 15 s. It reuses C's `Audio_features/audio_pipeline.py` and `audio_features.csv` unchanged, and saves `models/voice_model.joblib` + `voice_model_meta.json`.
+> - **Selection:** leave-one-recording-out CV (8 folds, so each test uses a phrase the speaker never said in training), LR vs RF vs XGBoost, chosen by log loss. The winner is **XGBoost**: accuracy 0.65, macro F1 0.64, log loss 0.95. C's first LR scored 0.42 / 1.14 on the same folds; chance is 0.25 / 1.39.
+> - **Threshold:** a clip is accepted for the claimed member only if it is the top prediction and P ≥ **0.533**. This minimises false rejects + 2 × false accepts. On held-out attempts it rejects 97% of other members and 90% of simulated strangers, but accepts only 44% of new genuine clips. The team's own training clips are all accepted (P ≥ 0.85).
+> - **For D:** `from src.train_voice_model import verify_voice`. `verify_voice(path, expected_member=face_member)` returns `{"approved", "reason", ...}`, and the reason distinguishes "not recognised" from "identity mismatch".
+> - **Real non-members: 0/4 clips rejected.** Ketia sounds like Parfait at 0.86–0.93 confidence; stranger 2 sounds like Hassan at 0.58–0.85. An `unknown` class trained on one stranger did not reject the other (tested leave-one-stranger-out), so it was not adopted.
+> - **Consequence for scenario 4 (D):** Parfait's face + Ketia's voice is **wrongly approved**. Parfait's face + `data/unauthorized/voices/approve.wav` is denied, but as an identity mismatch. Report it honestly: strangers are stopped by the face step; the voice step confirms the face and voice belong to the same member.
+> - **To do (everyone):** record 3–4 more takes of each phrase. Then rerun `prepare_audio.py`, `audio_pipeline.py` and `src/train_voice_model.py`.
+
 #### 3D. Consolidated evaluation (A, B, C → `04_model_training_evaluation.ipynb`)
 - One section per model, plus a **summary table**:
 
