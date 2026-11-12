@@ -7,8 +7,9 @@ normalises them to the conventions in Plan.md §2.3:
     Images -> data/images/<member>/<member>_<expression>_<take>.jpg
               EXIF orientation applied, then ALL metadata stripped (phone photos
               can carry GPS location), RGB, JPEG quality 95.
-    Audio  -> data/audio/<member>/<member>_<phrase>_<take>.wav
-              16 kHz, mono, 16-bit PCM (first audio stream only).
+    Audio  -> Audio_features/data/audio/raw/<member>_<phrase>_<take>.wav
+              16 kHz, mono, 16-bit PCM (first audio stream only). This is the
+              folder Audio_features/audio_pipeline.py reads; rerun it afterwards.
 
 Expected source layout (folder names are matched to config.MEMBER_NAMES,
 ignoring case, spaces and underscores):
@@ -17,7 +18,8 @@ ignoring case, spaces and underscores):
     <source>/Audio_features/<Full Name>/<phrase>.<m4a|aac|mp4|wav|mp3|...>
 
 Files that already exist are never overwritten. A new recording of the same
-expression/phrase gets the next take number (_02, _03, ...), so the script
+expression/phrase gets the next take number (images _02, _03, ...; audio
+_2, _3, ...), so the script
 can be rerun when members add more takes.
 
 Usage (from the project root):
@@ -79,9 +81,13 @@ def classify(stem: str, patterns: list[tuple[str, str]]) -> str:
     raise SystemExit(f"Cannot tell what {stem!r} is. Expected one of {[p[1] for p in patterns]}.")
 
 
-def next_path(directory: Path, member: str, label: str, ext: str) -> Path:
+def take_path(directory: Path, member: str, label: str, take: int, width: int, ext: str) -> Path:
+    return directory / f"{member}_{label}_{take:0{width}d}{ext}"
+
+
+def next_path(directory: Path, member: str, label: str, width: int, ext: str) -> Path:
     take = 1
-    while (path := directory / f"{member}_{label}_{take:02d}{ext}").exists():
+    while (path := take_path(directory, member, label, take, width, ext)).exists():
         take += 1
     return path
 
@@ -108,27 +114,31 @@ def plan_jobs(source: Path) -> list[tuple[str, Path, Path, str]]:
     """Return (kind, src, dst, label) for every file to ingest."""
     jobs: list[tuple[str, Path, Path, str]] = []
     reserved: set[Path] = set()
+    # Images go in one folder per member with 2-digit takes; audio goes in the
+    # audio pipeline's single raw folder with plain take numbers.
     sections = [
-        ("image", "Image_features", IMAGE_SUFFIXES, EXPRESSION_PATTERNS, config.IMAGES_DIR, config.IMAGE_EXT),
-        ("audio", "Audio_features", AUDIO_SUFFIXES, PHRASE_PATTERNS, config.AUDIO_DIR, config.AUDIO_EXT),
+        ("image", "Image_features", IMAGE_SUFFIXES, EXPRESSION_PATTERNS,
+         lambda m: config.IMAGES_DIR / m, 2, config.IMAGE_EXT),
+        ("audio", "Audio_features", AUDIO_SUFFIXES, PHRASE_PATTERNS,
+         lambda m: config.AUDIO_RAW_DIR, 1, config.AUDIO_EXT),
     ]
-    for kind, sub, suffixes, patterns, out_root, ext in sections:
+    for kind, sub, suffixes, patterns, out_dir_for, width, ext in sections:
         section_dir = source / sub
         if not section_dir.is_dir():
             print(f"[skip] no {sub}/ folder in {source}")
             continue
         for member_dir in sorted(p for p in section_dir.iterdir() if p.is_dir()):
             member = resolve_member(member_dir.name)
-            out_dir = out_root / member
+            out_dir = out_dir_for(member)
             for src in sorted(member_dir.iterdir()):
                 if src.suffix.lower() not in suffixes:
                     print(f"[skip] unsupported file {src}")
                     continue
                 label = classify(src.stem, patterns)
-                dst = next_path(out_dir, member, label, ext)
+                dst = next_path(out_dir, member, label, width, ext)
                 while dst in reserved:  # two sources in one run with the same label
                     take = int(dst.stem.rsplit("_", 1)[1]) + 1
-                    dst = out_dir / f"{member}_{label}_{take:02d}{ext}"
+                    dst = take_path(out_dir, member, label, take, width, ext)
                 reserved.add(dst)
                 jobs.append((kind, src, dst, label))
     return jobs

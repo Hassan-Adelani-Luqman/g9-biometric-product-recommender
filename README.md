@@ -43,7 +43,7 @@ pip install -r requirements.txt
 | `data/raw/` | Original `customer_social_profiles.csv` and `customer_transactions.csv` |
 | `data/processed/` | `merged_customer_data.csv` (merged and feature-engineered) |
 | `data/images/<member>/` | Facial images, e.g. `hassan_smiling_01.jpg` |
-| `data/audio/<member>/` | Voice clips, e.g. `emma_yes_approve_01.wav` (16 kHz mono) |
+| `Audio_features/data/audio/raw/` | Member voice clips, e.g. `emma_yes_approve_1.wav` (16 kHz mono); the phone originals are in `Audio_features/data/audio/original/` |
 | `data/unauthorized/` | Non-member faces and voices for the access-denied demo |
 | `features/` | `image_features.csv` |
 | `Audio_features/` | Member C's audio pipeline: recordings, `data/audio_features.csv`, `audio_pipeline.py`, notebook and figures |
@@ -56,9 +56,10 @@ Shared paths, member IDs, the member → customer mapping and thresholds are in 
 
 ## Data collection conventions
 
-- **Images:** 3 expressions (`neutral`, `smiling`, `surprised`) × 2–3 takes, `.jpg`, front-facing, even lighting.
-- **Audio:** 2 phrases (`yes_approve`, `confirm_transaction`) × 2–3 takes, `.wav`, 16 kHz mono, 2–4 s, quiet room.
-- **Naming:** `<member>_<expression|phrase>_<take>.<ext>`, using member IDs `hassan`, `emma`, `parfait`, `peter`.
+- **Images:** 3 expressions (`neutral`, `smiling`, `surprised`) × 1 take per member, `.jpg`, front-facing, even lighting. Saved as `data/images/<member>/<member>_<expression>_01.jpg`.
+- **Audio:** 2 phrases (`yes_approve`, `confirm_transaction`) × 1 take per member, `.wav`, 16 kHz mono, about 2.4–4.2 s, quiet room. Saved as `Audio_features/data/audio/raw/<member>_<phrase>_1.wav`.
+- **Naming:** `<member>_<expression|phrase>_<take>.<ext>`, using member IDs `hassan`, `emma`, `parfait`, `peter`. Image takes have 2 digits (`_01`); audio takes are plain numbers (`_1`).
+- **Augmentation** adds variety on top of the single takes: 8 per photo and 5 per clip (see notebook 02 and `Audio_features/audio_processing.ipynb`).
 - **Consent:** all members agree to their face and voice samples being stored in this repository.
 
 ### Unauthorized (non-member) samples
@@ -67,8 +68,8 @@ These are used only to test that strangers are denied, never to train a model.
 
 | File(s) | Who | Source |
 |---|---|---|
-| `data/unauthorized/faces/{neutral,smiling,surprised}.png` | one non-member, 3 expressions | _to confirm (e.g. stock-photo site and licence)_ |
-| `data/unauthorized/voices/{approve,confirm}.wav` | one non-member | _to confirm_ |
+| `data/unauthorized/faces/{neutral,smiling,surprised}.png` | one non-member, 3 expressions | public stock-photo source (exact site and licence: _to add_) |
+| `data/unauthorized/voices/{approve,confirm}.wav` | one consenting non-member | recorded for the project |
 | `Audio_features/data/audio/unauthorized/Ketia_{approve,comfirm}.{m4a,wav}` | Ketia, a consenting non-member | recorded for the project (Member C) |
 
 ### Adding recordings
@@ -84,7 +85,8 @@ The script:
 - renames files to the convention above, fixing typos such as "suprised";
 - converts audio to 16 kHz mono `.wav`;
 - applies photo rotation and **strips all image metadata**, including the GPS location phones embed;
-- never overwrites existing files. A second recording of the same expression or phrase becomes take `_02`, `_03`, and so on.
+- puts photos in `data/images/<member>/` and voice clips in `Audio_features/data/audio/raw/`, where the pipelines read them (rerun the pipelines and training scripts afterwards);
+- never overwrites existing files. A second recording of the same expression or phrase becomes the next take (`_02` for photos, `_2` for clips), and so on.
 
 ## How to run
 

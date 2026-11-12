@@ -34,8 +34,8 @@ Use this table as the final QA checklist before submitting. Every criterion is w
 | 2 | Data Cleaning & Merge Validation | Nulls and duplicates handled, types fixed, **join logic justified**, **post-merge checks shown** | A | notebook 01, `src/data_merge.py`, report §2 |
 | 3 | Image Quantity & Diversity | Each member has 3 expressions, with **consistent naming and format** | B (all members supply images) | `data/images/` |
 | 4 | Image Augmentation & Feature Extraction | **≥2 augmentations per image**; embeddings/histograms saved in `image_features.csv` | B | notebook 02, `features/image_features.csv` |
-| 5 | Audio Quality & Visualisation | 2 phrases per member, clean audio, **waveform + spectrogram plotted and interpreted** | C (all members supply audio) | `data/audio/`, notebook 03 |
-| 6 | Audio Augmentation & Feature Extraction | **≥2 augmentations**; **MFCCs + roll-off + energy** saved in `audio_features.csv` | C | notebook 03, `features/audio_features.csv` |
+| 5 | Audio Quality & Visualisation | 2 phrases per member, clean audio, **waveform + spectrogram plotted and interpreted** | C (all members supply audio) | `Audio_features/data/audio/raw/`, `Audio_features/audio_processing.ipynb`, `Audio_features/figures/audio_waveforms_spectrograms.png` |
+| 6 | Audio Augmentation & Feature Extraction | **≥2 augmentations**; **MFCCs + roll-off + energy** saved in `audio_features.csv` | C | `Audio_features/audio_processing.ipynb`, `Audio_features/data/audio_features.csv`, `Audio_features/audio_pipeline.py` |
 | 7 | Model Implementation | All 3 models implemented, trained and working | A, B, C | `src/train_*.py`, `models/*.joblib` |
 | 8 | Evaluation & Multimodal Logic | **Accuracy, F1 and loss for every model**; multimodal logic explained and used | A, B, C (logic: D) | notebook 04, report §5–6 |
 | 9 | System Simulation | Full transaction **and** unauthorised demo working smoothly in the CLI | D | `src/app.py`, video |

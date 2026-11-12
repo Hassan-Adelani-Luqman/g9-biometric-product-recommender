@@ -31,6 +31,7 @@ MERGED_CSV = PROCESSED_DIR / "merged_customer_data.csv"
 IMAGE_FEATURES_CSV = FEATURES_DIR / "image_features.csv"
 # Member C keeps the audio pipeline, recordings and features in Audio_features/.
 AUDIO_PIPELINE_DIR = ROOT / "Audio_features"
+AUDIO_RAW_DIR = AUDIO_PIPELINE_DIR / "data" / "audio" / "raw"   # member clips the audio pipeline reads
 AUDIO_FEATURES_CSV = AUDIO_PIPELINE_DIR / "data" / "audio_features.csv"
 MULTIMODAL_FEATURES_CSV = FEATURES_DIR / "multimodal_features.csv"
 
@@ -44,7 +45,9 @@ PRODUCT_META_PATH = MODELS_DIR / "product_model_meta.json"
 # --------------------------------------------------------------------------
 # Team members & data-collection conventions
 # File names: <member>_<expression>_<take>.jpg  e.g. hassan_smiling_01.jpg
-#             <member>_<phrase>_<take>.wav      e.g. emma_yes_approve_02.wav
+#             <member>_<phrase>_<take>.wav      e.g. emma_yes_approve_1.wav
+#             (images use 2-digit takes; audio uses plain numbers, as in
+#             Audio_features/data/audio/raw/)
 # Member IDs are lowercase first names (fixed; used as class labels).
 # --------------------------------------------------------------------------
 MEMBER_NAMES = {
