@@ -151,8 +151,3 @@ Each step prints its result, threshold and time:
 | 6 | Peter, rotated −15° (generated) | Peter + background noise (generated) | ✅ product displayed |
 
 **Known limitation:** a non-member's voice that resembles a member can pass the voice step. Ketia's voice with Parfait's face is approved. Strangers are stopped by the face step; the voice step reliably catches the *wrong member*. More voice recordings per member are the fix. See notebook 05, Section 6.
-
-## Links
-
-- Demo video: _TBD_
-- Report: _TBD_
