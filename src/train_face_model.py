@@ -1,6 +1,6 @@
-"""Facial recognition model (Phase 3B).
+"""Facial recognition model.
 
-Owner: Emma Tiffany Umwari (Member B)
+Owner: Emma Tiffany Umwari
 
 Identifies which team member is in a photo, and rejects faces that belong to
 nobody in the team. Input: ``features/image_features.csv`` built by

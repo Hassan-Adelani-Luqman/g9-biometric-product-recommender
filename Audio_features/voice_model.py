@@ -1,5 +1,5 @@
 """
-Voiceprint verification model (Member C).
+Voiceprint verification model (Parfait).
 
 Trains a speaker classifier on audio_features.csv and adds an "unknown speaker"
 rejection rule so non-members are refused, not just mapped to the nearest member.
@@ -8,7 +8,7 @@ rejection rule so non-members are refused, not just mapped to the nearest member
     python voice_model.py verify clip.wav               # who is speaking? approved?
     python voice_model.py verify clip.wav --expected alice   # must be alice (face result)
 
-From the CLI app (Member D):
+From the CLI app (Peter):
 
     from voice_model import VoiceVerifier
     verifier = VoiceVerifier.load()

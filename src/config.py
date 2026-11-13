@@ -1,7 +1,7 @@
 """Shared configuration for the biometric product recommender.
 
 Every script and notebook imports paths, member IDs and thresholds from here.
-That keeps the team on one set of conventions (see Plan.md, Section 2).
+That keeps the team on one set of conventions (see README.md, Data collection conventions).
 """
 
 from pathlib import Path
@@ -29,7 +29,7 @@ SOCIAL_PROFILES_CSV = RAW_DIR / "customer_social_profiles.csv"
 TRANSACTIONS_CSV = RAW_DIR / "customer_transactions.csv"
 MERGED_CSV = PROCESSED_DIR / "merged_customer_data.csv"
 IMAGE_FEATURES_CSV = FEATURES_DIR / "image_features.csv"
-# Member C keeps the audio pipeline, recordings and features in Audio_features/.
+# Parfait keeps the audio pipeline, recordings and features in Audio_features/.
 AUDIO_PIPELINE_DIR = ROOT / "Audio_features"
 AUDIO_RAW_DIR = AUDIO_PIPELINE_DIR / "data" / "audio" / "raw"   # member clips the audio pipeline reads
 AUDIO_FEATURES_CSV = AUDIO_PIPELINE_DIR / "data" / "audio_features.csv"
@@ -84,7 +84,7 @@ SAMPLE_RATE = 16_000      # Hz, mono
 N_MFCC = 13
 
 # --------------------------------------------------------------------------
-# Decision thresholds (placeholders; tuned in Phase 3 and saved to *_meta.json)
+# Decision thresholds (placeholders; the tuned values are saved to *_meta.json)
 # A prediction is accepted only if max(predict_proba) >= threshold.
 # --------------------------------------------------------------------------
 FACE_CONFIDENCE_THRESHOLD = 0.60

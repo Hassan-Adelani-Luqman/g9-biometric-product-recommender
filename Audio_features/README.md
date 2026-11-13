@@ -1,4 +1,4 @@
-# Audio pipeline & voiceprint verification (Member C)
+# Audio pipeline & voiceprint verification (Parfait)
 
 | File | Purpose |
 |---|---|
@@ -19,7 +19,7 @@ data/audio/original/Emma Tiffany Umwari/yes_approve_2.m4a        <- extra takes:
 data/audio/unauthorized/stranger_1.m4a                            <- people outside the team
 ```
 
-`prepare_audio.py` converts them to `data/audio/raw/<firstname>_<phrase>_<take>.wav` (e.g. `emma_yes_approve_1.wav`). The member ID is the **first name in lowercase**, so the face pipeline (Member B) must use the same IDs.
+`prepare_audio.py` converts them to `data/audio/raw/<firstname>_<phrase>_<take>.wav` (e.g. `emma_yes_approve_1.wav`). The member ID is the **first name in lowercase**, so the face pipeline (Emma) must use the same IDs.
 
 ## 2. Run
 
@@ -46,7 +46,7 @@ Or open `audio_processing.ipynb` and run all cells.
 
   Both thresholds are learned from held-out predictions.
 
-## For Member D (CLI integration)
+## For Peter (CLI integration)
 
 ```python
 from voice_model import VoiceVerifier

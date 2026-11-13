@@ -1,5 +1,5 @@
 """
-Audio pipeline (Member C) - load, clean, visualise, augment and extract features
+Audio pipeline (Parfait) - load, clean, visualise, augment and extract features
 from each team member's voice recordings, then write audio_features.csv.
 
 Expected input layout (file names drive the labels):

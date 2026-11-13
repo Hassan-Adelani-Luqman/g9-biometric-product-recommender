@@ -1,6 +1,6 @@
-"""Multimodal biometric product recommender: command-line app (Phase 4).
+"""Multimodal biometric product recommender: command-line app.
 
-Owner: Peter Michael Angelo Rucakibungo (Member D)
+Owner: Peter Michael Angelo Rucakibungo
 
 Chains the three trained models in the order of the brief's flow diagram:
 
@@ -19,7 +19,7 @@ plus someone else's voice is not enough.
 Run from the project root:
     python src/app.py --face <image> --voice <clip.wav>   # one transaction
     python src/app.py                                     # interactive: asks for each file in turn
-    python src/app.py --demo                              # runs the 6 required scenarios (Plan.md 4.4)
+    python src/app.py --demo                              # runs the 6 required scenarios
 
 Exit codes: 0 = access granted (demo: every scenario behaved as expected),
 1 = access denied (demo: a scenario did not), 2 = missing/invalid file or model.
@@ -244,7 +244,7 @@ def _verdict(approved: bool, where: str | None, detail: str) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Demo: the 6 required scenarios (Plan.md 4.4)
+# Demo: the 6 required scenarios
 # ---------------------------------------------------------------------------
 RAW_AUDIO = config.AUDIO_PIPELINE_DIR / "data" / "audio" / "raw"
 
@@ -268,24 +268,24 @@ def demo_scenarios(workdir: Path) -> list[Scenario]:
     clip = lambda m, p: RAW_AUDIO / f"{m}_{p}_1.wav"                # noqa: E731
     face6, voice6 = make_augmented_inputs(img("peter", "smiling"), clip("peter", "confirm_transaction"), workdir)
     return [
-        Scenario("Authorised member (Member A, Hassan)",
+        Scenario("Authorised member (Hassan)",
                  img("hassan", "neutral"), clip("hassan", "yes_approve"),
-                 "approved", "product displayed", "Member A: own face + own voice"),
-        Scenario("Member B (Emma): different expression and phrase",
+                 "approved", "product displayed", "Hassan: own face + own voice"),
+        Scenario("Emma with a different expression and phrase",
                  img("emma", "smiling"), clip("emma", "confirm_transaction"),
-                 "approved", "product displayed", "Member B: other expression + phrase"),
+                 "approved", "product displayed", "Emma: other expression + phrase"),
         Scenario("Unauthorised face (non-member)",
                  config.UNAUTHORIZED_FACES_DIR / "neutral.png", clip("hassan", "yes_approve"),
                  "face", "denied at face step", "Non-member face"),
-        Scenario("Member C's face (Parfait) + unauthorised voice",
+        Scenario("Parfait's face + unauthorised voice",
                  img("parfait", "neutral"), config.UNAUTHORIZED_VOICES_DIR / "approve.wav",
-                 "voice", "denied at voice step", "Member C face + non-member voice"),
-        Scenario("Member C's face (Parfait) + Member D's voice (Peter)",
+                 "voice", "denied at voice step", "Parfait's face + non-member voice"),
+        Scenario("Parfait's face + Peter's voice",
                  img("parfait", "surprised"), clip("peter", "yes_approve"),
-                 "voice", "denied: identity mismatch", "Member C face + Member D voice",
+                 "voice", "denied: identity mismatch", "Parfait's face + Peter's voice",
                  reason_contains="identity mismatch"),
-        Scenario("Robustness: augmented face and voice of Member D (Peter)",
-                 face6, voice6, "approved", "product displayed", "Member D: augmented face + voice",
+        Scenario("Robustness: augmented face and voice of Peter",
+                 face6, voice6, "approved", "product displayed", "Peter: augmented face + voice",
                  face_label="data/images/peter/peter_smiling_01.jpg, rotated -15 degrees (generated)",
                  voice_label="Audio_features/.../peter_confirm_transaction_1.wav + background noise at 20 dB SNR (generated)"),
     ]

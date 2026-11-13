@@ -1,9 +1,9 @@
-"""Voiceprint verification model (Phase 3C).
+"""Voiceprint verification model.
 
-Owner: Parfait Shema Semana (Member C)
+Owner: Parfait Shema Semana
 
 Checks that a voice clip belongs to the member the face model recognised.
-Input: ``Audio_features/data/audio_features.csv``, built by Member C's
+Input: ``Audio_features/data/audio_features.csv``, built by Parfait's
 ``Audio_features/audio_pipeline.py`` (64 MFCC / spectral / energy / pitch
 statistics per clip; every recording with 5 augmented copies). The same
 ``load_clip`` and ``extract_features`` functions are used here at inference,
@@ -65,7 +65,7 @@ try:
 except ModuleNotFoundError:
     import config
 
-# Member C's audio pipeline lives in Audio_features/ (not a package).
+# Parfait's audio pipeline lives in Audio_features/ (not a package).
 if str(config.AUDIO_PIPELINE_DIR) not in sys.path:
     sys.path.insert(0, str(config.AUDIO_PIPELINE_DIR))
 import audio_pipeline as ap  # noqa: E402
@@ -93,7 +93,7 @@ def load_data() -> tuple[pd.DataFrame, list[str]]:
 
 
 def unauthorized_clips() -> list[Path]:
-    """Non-member .wav clips from data/unauthorized/voices/ and Member C's folder."""
+    """Non-member .wav clips from data/unauthorized/voices/ and Parfait's folder."""
     clips = []
     for folder in [config.UNAUTHORIZED_VOICES_DIR, ap.UNAUTH_DIR]:
         if folder.exists():

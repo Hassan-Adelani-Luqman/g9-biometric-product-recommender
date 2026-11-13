@@ -2,7 +2,7 @@
 
 Team members hand in photos and voice clips in whatever their phone produces
 (.jpeg/.jpg, .m4a/.aac/.mp4, inconsistent capitalisation, typos). This script
-normalises them to the conventions in Plan.md §2.3:
+normalises them to the conventions in README.md (Data collection conventions):
 
     Images -> data/images/<member>/<member>_<expression>_<take>.jpg
               EXIF orientation applied, then ALL metadata stripped (phone photos

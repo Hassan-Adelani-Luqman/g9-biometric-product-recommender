@@ -1,6 +1,6 @@
 """Image pipeline: load, detect/align faces, augment, and extract features.
 
-Owner: Emma Tiffany Umwari (Member B). See Plan.md, Section 2A.
+Owner: Emma Tiffany Umwari.
 
 Face models (OpenCV Zoo, ONNX, run by opencv-python; no torch/tensorflow):
   * YuNet  - face detector returning a box, 5 landmarks and a confidence score

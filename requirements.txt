@@ -9,7 +9,7 @@ scikit-learn==1.9.1
 xgboost==3.4.1
 joblib==1.6.0
 
-# Image pipeline (Member B)
+# Image pipeline (Emma)
 opencv-python==5.0.0.93
 pillow==13.0.0
 scikit-image==0.26.0
@@ -17,7 +17,7 @@ scikit-image==0.26.0
 # opencv-python above, so no torch/tensorflow is needed. The model files are
 # downloaded and checksum-verified on first use by src/image_pipeline.py.
 
-# Audio pipeline (Member C)
+# Audio pipeline (Parfait)
 librosa==1.0.0
 soundfile==0.14.0
 imageio-ffmpeg==0.8.1   # bundled ffmpeg: converts phone audio (m4a/aac/mp4) in src/ingest_biometrics.py

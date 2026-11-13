@@ -15,16 +15,16 @@ Start → Facial Recognition ──fail──▶ Access Denied
       Display Predicted Product
 ```
 
-> Status: **Phases 0–4 complete.** The data, pipelines, three models and CLI app all work, and the app passes all 6 demo scenarios. Phase 5 (report and video) is next. See [Plan.md](Plan.md) for the full phased plan, roles and timeline.
+> Status: the data, pipelines, three models and CLI app all work, and the app passes all 6 demo scenarios. The report and demo video are the final step.
 
 ## Team
 
-| Member | Name | Ownership |
-|---|---|---|
-| A | Hassan Adelani Luqman | Data merge, EDA, product recommendation model |
-| B | Emma Tiffany Umwari | Image pipeline, `image_features.csv`, facial recognition model |
-| C | Parfait Shema Semana | Audio pipeline, `audio_features.csv`, voiceprint verification model |
-| D | Peter Michael Angelo Rucakibungo | Integration, CLI app, unauthorised-attempt demo, report and video |
+| Name | Ownership |
+|---|---|
+| Hassan Adelani Luqman | Data merge, EDA, product recommendation model |
+| Emma Tiffany Umwari | Image pipeline, `image_features.csv`, facial recognition model |
+| Parfait Shema Semana | Audio pipeline, `audio_features.csv`, voiceprint verification model |
+| Peter Michael Angelo Rucakibungo | Integration, CLI app, unauthorised-attempt demo, report and video |
 
 ## Setup
 
@@ -46,7 +46,7 @@ pip install -r requirements.txt
 | `Audio_features/data/audio/raw/` | Member voice clips, e.g. `emma_yes_approve_1.wav` (16 kHz mono); the phone originals are in `Audio_features/data/audio/original/` |
 | `data/unauthorized/` | Non-member faces and voices for the access-denied demo |
 | `features/` | `image_features.csv` |
-| `Audio_features/` | Member C's audio pipeline: recordings, `data/audio_features.csv`, `audio_pipeline.py`, notebook and figures |
+| `Audio_features/` | Parfait's audio pipeline: recordings, `data/audio_features.csv`, `audio_pipeline.py`, notebook and figures |
 | `models/` | Trained models (`*.joblib`) plus metadata (`*_meta.json`) |
 | `notebooks/` | `01` data, `02` images, `04` models, `05` system demo (the audio notebook is in `Audio_features/`) |
 | `src/` | Pipeline scripts and the CLI app (`app.py`) |
@@ -70,7 +70,7 @@ These are used only to test that strangers are denied, never to train a model.
 |---|---|---|
 | `data/unauthorized/faces/{neutral,smiling,surprised}.png` | one non-member, 3 expressions | public stock-photo source (exact site and licence: _to add_) |
 | `data/unauthorized/voices/{approve,confirm}.wav` | one consenting non-member | recorded for the project |
-| `Audio_features/data/audio/unauthorized/Ketia_{approve,comfirm}.{m4a,wav}` | Ketia, a consenting non-member | recorded for the project (Member C) |
+| `Audio_features/data/audio/unauthorized/Ketia_{approve,comfirm}.{m4a,wav}` | Ketia, a consenting non-member | recorded for the project (Parfait) |
 
 ### Adding recordings
 
@@ -143,11 +143,11 @@ Each step prints its result, threshold and time:
 
 | # | Face | Voice | Result |
 |---|---|---|---|
-| 1 | Hassan (Member A) | Hassan, "Yes, approve" | ✅ product displayed |
-| 2 | Emma (Member B), smiling | Emma, "Confirm transaction" | ✅ product displayed |
+| 1 | Hassan | Hassan, "Yes, approve" | ✅ product displayed |
+| 2 | Emma, smiling | Emma, "Confirm transaction" | ✅ product displayed |
 | 3 | Non-member | (not reached) | ❌ denied at face step |
-| 4 | Parfait (Member C) | Non-member | ❌ denied at voice step |
-| 5 | Parfait (Member C) | Peter (Member D) | ❌ denied: identity mismatch |
+| 4 | Parfait | Non-member | ❌ denied at voice step |
+| 5 | Parfait | Peter | ❌ denied: identity mismatch |
 | 6 | Peter, rotated −15° (generated) | Peter + background noise (generated) | ✅ product displayed |
 
 **Known limitation:** a non-member's voice that resembles a member can pass the voice step. Ketia's voice with Parfait's face is approved. Strangers are stopped by the face step; the voice step reliably catches the *wrong member*. More voice recordings per member are the fix. See notebook 05, Section 6.

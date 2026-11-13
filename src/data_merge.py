@@ -43,8 +43,8 @@ NO_HISTORY = "no_history"   # cust_prev_category on a customer's first purchase
 NO_PROFILE = "no_profile"   # dominant_platform for customers without a profile
 
 # Columns describing the purchase itself (known only after it happens).
-# They stay in the merged dataset for EDA. The product model (Phase 3A)
-# should use the leakage-safe "cust_prev_*" history features instead.
+# They stay in the merged dataset for EDA. The product model should use
+# the leakage-safe "cust_prev_*" history features instead.
 POST_PURCHASE_COLUMNS = ["purchase_amount", "amount_bucket", "customer_rating", "rating_was_missing"]
 
 # Identifier / bookkeeping columns that are never model features.

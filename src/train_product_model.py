@@ -1,4 +1,4 @@
-"""Product recommendation model (Phase 3A).
+"""Product recommendation model.
 
 Owner: Hassan Adelani Luqman
 
